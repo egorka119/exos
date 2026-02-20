@@ -1,3 +1,4 @@
+---
 - name: Get account and pubkey from exos device
   exos_command:
     commands:
