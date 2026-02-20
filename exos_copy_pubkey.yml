@@ -2,13 +2,6 @@
 - hosts: exos_wo_pubkey
   gather_facts: no
   tasks:
-    - name: Get account and pubkey from exos device
-      community.network.exos_command:
-        commands:
-          - show accounts
-          - show sshd2 user-key
-      register: cfg
-
     - name: Add account and pubkey to exos device
       exos_config:
         lines:
@@ -16,4 +9,4 @@
           -  create sshd2 user-key {{ usr }} {{ pubkey }}
           -  configure sshd2 user-key {{ usr }} add user {{ usr }}
         save_when: modified
-      when: usr not in cfg.stdout[0] or usr not in cfg.stdout[1]
+     
