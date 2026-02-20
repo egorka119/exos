@@ -1,16 +1,18 @@
 ---
-- name: Get account and pubkey from exos device
-  exos_command:
-    commands:
-      - show accounts
-      - show sshd2 user-key
-  register: cfg
+- hosts: exos_wo_pubkey:children
+  tasks:
+    - name: Get account and pubkey from exos device
+      exos_command:
+        commands:
+          - show accounts
+          - show sshd2 user-key
+      register: cfg
 
-- name: Add account and pubkey to exos device
-  exos_config:
-    lines:
-      -  create account admin {{ usr }} {{ psw }}
-      -  create sshd2 user-key {{ usr }} {{ pubkey }}
-      -  configure sshd2 user-key {{ usr }} add user {{ usr }}
-    save_when: modified
-  when: usr not in cfg.stdout[0] or usr not in cfg.stdout[1]
+    - name: Add account and pubkey to exos device
+      exos_config:
+        lines:
+          -  create account admin {{ usr }} {{ psw }}
+          -  create sshd2 user-key {{ usr }} {{ pubkey }}
+          -  configure sshd2 user-key {{ usr }} add user {{ usr }}
+        save_when: modified
+      when: usr not in cfg.stdout[0] or usr not in cfg.stdout[1]
