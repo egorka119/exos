@@ -1,5 +1,6 @@
 ---
-- hosts: exos_wo_pubkey:children
+- hosts: exos_wo_pubkey
+  gather_facts: no
   tasks:
     - name: Get account and pubkey from exos device
       exos_command:
